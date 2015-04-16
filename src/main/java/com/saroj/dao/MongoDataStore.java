@@ -68,7 +68,6 @@ public class MongoDataStore implements DataStore {
 	public List<ServiceEventRequest> getAll() {
 
 		BasicDBObject query = new BasicDBObject();
-		// query.put("timeInMs", new BasicDBObject("$ne","18221796784"));
 		DBCursor cursor = rawEventsColl.find(query);
 		DBObject data = null;
 		List<ServiceEventRequest> list = new ArrayList<ServiceEventRequest>();
@@ -78,7 +77,6 @@ public class MongoDataStore implements DataStore {
 			System.out.println("PRINT data::" + data);
 			ServiceEventRequest request = new ServiceEventRequest();
 			request.setName((String) data.get("name"));
-			// request.setTimeInMs((String) data.get("timeInMs"));
 			list.add(request);
 		}
 		System.out.println("PRINT data after while::" + list);
