@@ -19,7 +19,7 @@ c. Create the topic by going till ../kafka_2.9.2-0.8.1.1/bin. (For PROD env, mak
 2. Donwload MongoDB the below given link or follow my other project called ChatApp in my github account, where i have given the detailed steps
 For Mac: http://docs.mongodb.org/manual/tutorial/install-mongodb-on-os-x/
 For Windows: http://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/
-3. go to MongoDB /bin and run the mongod command to start mongoDB server
+3. Go to MongoDB installation ../bin and run the mongod command to start mongoDB server
 4. Checkout the project. 
 5. Open the project in eclipse and right click on project and Run as maven build and give the command as tomcat:run
 6. Open any rest client(e.g DHC Client) and submit a POST request as below with this URL http://127.0.0.1:8080/RealTimeAnalytics/send
