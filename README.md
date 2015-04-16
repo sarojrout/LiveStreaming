@@ -6,11 +6,14 @@ Below are Steps to Execute the Project and to see the realtime streaming
 ------------------------------------------------------------------
 1. Download Kafka from the below given link
 http://www.us.apache.org/dist/kafka/0.8.1.1/kafka_2.9.2-0.8.1.1.tgz
-and Start the zooKeeper node by using the below command by going till this dir ../kafka_2.9.2-0.8.1.1/bin
+
+a. Start the zooKeeper node by using the below command by going till this dir ../kafka_2.9.2-0.8.1.1/bin
 ./zookeeper-server-start.sh ../config/zookeeper.properties
-And then start kafka broker by using the below command by going till the ../kafka_2.9.2-0.8.1.1/bin
+
+b.  start kafka broker by using the below command by going till the ../kafka_2.9.2-0.8.1.1/bin
 ./kafka-server-start.sh ../config/server.properties &
-Create the topic by going till ../kafka_2.9.2-0.8.1.1/bin. (For PROD env, make the replication-factor as 2 or 3 based on your requirement)
+
+c. Create the topic by going till ../kafka_2.9.2-0.8.1.1/bin. (For PROD env, make the replication-factor as 2 or 3 based on your requirement)
 ./kafka-topics.sh --create --topic test-events --replication-factor 1 --zookeeper 127.0.0.1:2181 --partition 1
 
 2. Donwload MongoDB the below given link or follow my other project called ChatApp in my github account, where i have given the detailed steps
