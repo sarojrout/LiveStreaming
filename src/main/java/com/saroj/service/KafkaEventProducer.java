@@ -24,9 +24,9 @@ public class KafkaEventProducer implements EventProducer {
 
 	private final static org.slf4j.Logger logger = LoggerFactory
 			.getLogger(KafkaEventProducer.class);
-	
+
 	/**
-	 * 
+	 * Establish the connection with kafka cluster
 	 * @param host
 	 * @param port
 	 * @return
@@ -50,23 +50,25 @@ public class KafkaEventProducer implements EventProducer {
 
 		return kafkaProducer;
 	}
-	
+
 	/**
-	 * Send the message to the topic
+	 * Send the message to the broker
 	 */
-	
+
 	@Override
 	public boolean send(String topicName, String data) {
 		boolean success = false;
-		KeyedMessage<String, String> message = new KeyedMessage<String, String>(topicName, data);
-		try{
+		KeyedMessage<String, String> message = new KeyedMessage<String, String>(
+				topicName, data);
+		try {
 			internalProducer.send(message);
 			success = true;
-		} catch(Exception e){
+		} catch (Exception e) {
 			success = false;
-			logger.error("Error while sending kafka message: " + e.getStackTrace());
+			logger.error("Error while sending kafka message: "
+					+ e.getStackTrace());
 		}
-		
+
 		return success;
 	}
 

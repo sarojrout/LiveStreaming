@@ -15,8 +15,9 @@ import kafka.consumer.ConsumerIterator;
 import kafka.consumer.KafkaStream;
 import kafka.javaapi.consumer.ConsumerConnector;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.LoggerFactory;
 
+import com.saroj.controller.BaseController;
 import com.saroj.dao.DataStore;
 import com.saroj.dao.MongoDataStore;
 
@@ -24,26 +25,33 @@ import com.saroj.dao.MongoDataStore;
  * @author sarojrout
  *
  */
-public class KafkaEventConsumer extends Thread implements EventConsumer{
-	
+public class KafkaEventConsumer extends Thread implements EventConsumer {
+
 	final static String clientId = "SarojKafkaClient";
 	final static String TOPIC = "test-events";
 	private static final String MONGO_HOST = "localhost";
 	private static final int MONGO_PORT = 27017;
 	private ConsumerConnector consumerConnector;
+	private final static org.slf4j.Logger logger = LoggerFactory
+			.getLogger(BaseController.class);
 
 	public static void main(String[] argv) {
 		KafkaEventConsumer kafkaConsumer = new KafkaEventConsumer();
 		kafkaConsumer.start();
 	}
+
 	public KafkaEventConsumer() {
 		Properties properties = new Properties();
 		properties.put("zookeeper.connect", "localhost:2181");
 		properties.put("group.id", "test-group");
 		ConsumerConfig consumerConfig = new ConsumerConfig(properties);
-		consumerConnector = Consumer.createJavaConsumerConnector(consumerConfig);
+		consumerConnector = Consumer
+				.createJavaConsumerConnector(consumerConfig);
 	}
-	
+
+	/**
+	 * This thread will pull the events from the topic and insert into mongo DB
+	 */
 	@SuppressWarnings("unchecked")
 	public void run() {
 		DataStore store = null;
@@ -55,21 +63,18 @@ public class KafkaEventConsumer extends Thread implements EventConsumer{
 
 		Map<String, Integer> topicCountMap = new HashMap<String, Integer>();
 		topicCountMap.put(TOPIC, new Integer(1));
-		Map<String, List<KafkaStream<byte[], byte[]>>> consumerMap = consumerConnector.createMessageStreams(topicCountMap);
+		Map<String, List<KafkaStream<byte[], byte[]>>> consumerMap = consumerConnector
+				.createMessageStreams(topicCountMap);
 		KafkaStream<byte[], byte[]> stream = consumerMap.get(TOPIC).get(0);
 		ConsumerIterator<byte[], byte[]> it = stream.iterator();
 		while (it.hasNext()) {
 			try {
 				String data = new String(it.next().message());
 				store.storeRawEvent(data);
-
-				HashMap<String, Object> result = new ObjectMapper().readValue(
-						data, HashMap.class);
-				long timeStamp = Long.parseLong((String) result.get("timeInMs"));
-				String eventName = (String) result.get("name");
-				store.increment(eventName, timeStamp);
 			} catch (Exception e) {
-				// Log error and continue
+				logger.error(
+						"Throwing Exception while inserting data to Mongo DB",
+						e);
 			}
 		}
 	}

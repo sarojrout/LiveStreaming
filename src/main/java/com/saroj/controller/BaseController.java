@@ -49,7 +49,7 @@ public class BaseController {
 	}
 
 	/**
-	 * Events sent to kafka Cluster
+	 * Events sent to kafka Cluster by the producer
 	 * @param event
 	 * @return
 	 */
@@ -70,39 +70,12 @@ public class BaseController {
 		return "success";
 	}
 	
-	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-	public String dashboard(
-			@RequestParam(value = "eventName") String eventName,
-			@RequestParam(value = "bucket") String bucket,
-			@RequestParam(required = false, value = "value") Integer value,
-			ModelMap model) {
-
-		DataStore mongo = null;
-		try {
-			mongo = MongoDataStore.getInstance(MONGO_HOST,MONGO_PORT );
-		} catch (UnknownHostException e) {
-			logger.error("Error in connection to mongoDb" + e.getStackTrace());
-			model.addAttribute("message", "Invalid request");
-			return VIEW_DASHBOARD;
-		}
-
-		model.addAttribute("eventName", eventName);
-
-		if (bucket.equals("hourly")) {
-			model.addAttribute("bucket", "hour");
-			model.addAttribute("counter",
-					mongo.getHourlyCount(eventName, new Date(), value));
-		} else if (bucket.equals("daily")) {
-			model.addAttribute("bucket", "day");
-			model.addAttribute("counter",
-					mongo.getDailyCount(eventName, new Date()));
-		} else {
-			model.addAttribute("message", "Invalid request");
-		}
-
-		return VIEW_DASHBOARD;
-	}
-
+	
+	/**
+	 * To view the live data
+	 * @param model
+	 * @return
+	 */
 	 @RequestMapping(value = "/dashboard/all", method = RequestMethod.GET)  
 		public String allData(ModelMap model) { 
 		 DataStore mongo = null;
