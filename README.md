@@ -50,41 +50,9 @@ Ans: ./kafka-run-class.sh kafka.admin.DeleteTopicCommand --zookeeper 127.0.0.1:2
 
 Important Note:
 -------------------------------------------------------------------------
-To run the consumer program separately, build a jar by taking the below files from this project and build another java project and build as a jar
+To run the consumer program separately, build a jar by taking the below files from this project and build another java project and build as a jar:
+
 1. KafkaEventConsumer.java
 2. Event Consumer.java
 3. DataStore.java
 4. MongoDataStore.java
-
-Have the below entry in the POM.xml in the new project as additional plugin
---------------------------------------------------------------------------
-<plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-assembly-plugin</artifactId>
-		<version>2.4.1</version>
-		<configuration>		
-			<!-- get all project dependencies -->
-				<descriptorRefs>
-					<descriptorRef>jar-with-dependencies</descriptorRef>
-				</descriptorRefs>
-			<!-- MainClass in mainfest make a executable jar -->
-				<archive>
-					<manifest>
-						<mainClass>com.saroj.service.KafkaEventConsumer</mainClass>
-					</manifest>
-				</archive>
-	   </configuration>
-	  <executions>
-			<execution>
-			<id>make-assembly</id>
-	          <!-- bind to the packaging phase -->
-			<phase>package</phase> 
-			<goals>
-				<goal>single</goal>
-			</goals>
-		</execution>
-	</executions>
- </plugin>  
-				  
-				  
-
