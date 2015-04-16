@@ -38,7 +38,6 @@ public class BaseController {
 	private static final String MONGO_HOST = "localhost";
 	private static final int MONGO_PORT = 27017;
 	private static final String VIEW_INDEX = "index";
-	private static final String VIEW_DASHBOARD = "dashboard";
 	private static final String VIEW_DATA = "allData";
 	private final static org.slf4j.Logger logger = LoggerFactory.getLogger(BaseController.class);
 	private final static EventProducer eventProducer = KafkaEventProducer.getConnection(KAFKA_HOST, KAFKA_PORT);
